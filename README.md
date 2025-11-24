@@ -1,8 +1,10 @@
 # Monte Carlo Quantum Sampling
+
 This project is an algorithm that uses quantum computing results to update in a Monte Carlo 
 simulation. 
 The algorithm is useful to compute Renyi-2 correlator and other observables for open systems.
 Quantum computing part is simulated using cuquantum package.
+
 ---
 
 # Structure
