@@ -218,47 +218,65 @@ class GPUStateVector:
 #     # Simple test: 2-qubit Bell state (|00> + |11>)/sqrt(2)
 #     n_qubits = 2
 #     sim = GPUStateVector(n_qubits=n_qubits, dtype=cp.complex64)
-#
+
 #     # Define gates on GPU
-#     H = cp.array([[1, 1],
-#                   [1, -1]], dtype=cp.complex64) / cp.sqrt(2)
-#
-#     # CNOT in computational basis, control=0, target=1
-#     CNOT = cp.array([[1, 0, 0, 0],
+#     H = cp.array([[0, 1],
+#                   [1, 0]], dtype=cp.complex64) 
+
+#     mygate = cp.array([[1, 0, 0, 0],
+#                      [0, 0, 1j, 0],
 #                      [0, 0, 0, 1],
-#                      [0, 0, 1, 0],
-#                      [0, 1, 0, 0]], dtype=cp.complex64)
-#
+#                      [0, 1j, 0, 0]], dtype=cp.complex64)
+
 #     # Start from |00>
 #     sim.reset()
-#
+
 #     # Apply H on qubit 0
 #     sim.apply_1q_gate(H, qubit=0)
+#     print("Statevector (host):")
 #     print(sim.get_statevector())
-#
-#     # Apply CNOT(0 -> 1)
-#     sim.apply_2q_gate(CNOT, qubit1=0, qubit2=1)
-#
+
+
+#     sim.apply_2q_gate(mygate, qubit1=0, qubit2=1)
+
 #     # Check the statevector
 #     psi = sim.get_statevector()
 #     print("Statevector (host):")
 #     print(psi)
-#
-#     # Expected: approx [1/sqrt(2), 0, 0, 1/sqrt(2)]
-#     print("Norm:", np.linalg.norm(psi))
-#
-#     # Probabilities
-#     probs = sim.probabilities()
-#     print("Probabilities:", probs)
-#
-#     # Expectation of Z0 Z1 (should be ~ +1 for Bell state (|00>+|11>)/√2)
-#     exp_zz = sim.expectation_z_string([0, 1])
-#     print("<Z0 Z1> ~", exp_zz)
-#
-#     # Sampling
-#     bitstrings = sim.sample_bitstrings(n_shots=20)
-#     print("Samples:", bitstrings)
-#     counts = {}
-#     for b in bitstrings:
-#         counts[b] = counts.get(b, 0) + 1
-#     print("Counts:", counts)
+
+
+
+#     sim.reset()
+#     # Apply H on qubit 0
+#     sim.apply_1q_gate(H, qubit=0)
+#     print("Statevector (host):")
+#     print(sim.get_statevector())
+
+
+#     sim.apply_2q_gate(mygate, qubit1=0, qubit2=1, adjoint=True)
+
+#     # Check the statevector
+#     psi = sim.get_statevector()
+#     print("Statevector (host):")
+#     print(psi)
+
+#     print(cp.allclose(mygate, mygate.conj().T)) 
+
+    # # Expected: approx [1/sqrt(2), 0, 0, 1/sqrt(2)]
+    # print("Norm:", np.linalg.norm(psi))
+
+    # # Probabilities
+    # probs = sim.probabilities()
+    # print("Probabilities:", probs)
+
+    # # Expectation of Z0 Z1 (should be ~ +1 for Bell state (|00>+|11>)/√2)
+    # exp_zz = sim.expectation_z_string([0, 1])
+    # print("<Z0 Z1> ~", exp_zz)
+
+    # # Sampling
+    # bitstrings = sim.sample_bitstrings(n_shots=20)
+    # print("Samples:", bitstrings)
+    # counts = {}
+    # for b in bitstrings:
+    #     counts[b] = counts.get(b, 0) + 1
+    # print("Counts:", counts)
